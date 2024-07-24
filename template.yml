@@ -1,0 +1,124 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Parameters:
+  stateMachineName:
+    Description: State Machine Name
+    Type: String
+    Default: SagaOrderFulfillment
+
+Resources:
+  # ============== Lambdas ==============
+  PaymentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/payments
+      Architectures:
+        - x86_64
+      Events:
+        PaymentsGetApi:
+          Type: Api
+          Properties:
+            Path: /payments
+            Method: get
+  PaymentsRefundFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/payments-refund
+      Architectures:
+        - x86_64
+      Events:
+        PaymentsGetApi:
+          Type: Api
+          Properties:
+            Path: /payments-refund
+            Method: get
+  OrdersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/orders
+      Architectures:
+        - x86_64
+      Events:
+        OrdersGetApi:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: get
+  OrdersCancelFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/orders-cancel
+      Architectures:
+        - x86_64
+      Events:
+        OrdersGetApi:
+          Type: Api
+          Properties:
+            Path: /orders-cancel
+            Method: get
+  InventoryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/inventory
+      Architectures:
+        - x86_64
+      Events:
+        InventoryGetApi:
+          Type: Api
+          Properties:
+            Path: /inventory
+            Method: get
+  InventoryRollbackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: lambdas/inventory-rollback
+      Architectures:
+        - x86_64
+      Events:
+        InventoryGetApi:
+          Type: Api
+          Properties:
+            Path: /inventory-rollback
+            Method: get
+  # ============== Lambdas END ==============
+
+  # ============== Step Function ==============
+  StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: !Ref stateMachineName
+      DefinitionUri: saga_pattern.asl.yaml
+      DefinitionSubstitutions:
+        PaymentsFunctionArn: !GetAtt PaymentsFunction.Arn
+        PaymentsRefundFunctionArn: !GetAtt PaymentsRefundFunction.Arn
+        OrdersFunctionArn: !GetAtt OrdersFunction.Arn
+        OrdersCancelFunctionArn: !GetAtt OrdersCancelFunction.Arn
+        InventoryFunctionArn: !GetAtt InventoryFunction.Arn
+        InventoryRollbackFunctionArn: !GetAtt InventoryRollbackFunction.Arn
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref PaymentsFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref PaymentsRefundFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref OrdersFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref OrdersCancelFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref InventoryFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref InventoryRollbackFunction
+    # ============== Step Function ==============

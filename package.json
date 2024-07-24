@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Node.js Saga Pattern Blueprint for AWS Step Functions",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "gts lint",
-    "serve": "node dist/server.js",
-    "start": "npm run serve",
+    "serve:dev": "lerna run serve:dev",
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
@@ -21,14 +21,18 @@
     "step",
     "functions"
   ],
-  "author": "Arif Alili",
-  "license": "ISC",
+  "author": "Arif Alili <alili.arif@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "20.12.7",
     "gts": "^5.3.1",
+    "lerna": "^8.1.5",
     "typescript": "^5.5.2"
   },
   "dependencies": {
     "@types/aws-lambda": "^8.10.140"
-  }
+  },
+  "workspaces": [
+    "lambdas/*"
+  ]
 }
