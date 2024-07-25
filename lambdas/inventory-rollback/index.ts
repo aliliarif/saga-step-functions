@@ -8,20 +8,6 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> => {
-  // mock process payment error
-  if (event.body) {
-    const eventBody = JSON.parse(event.body);
-
-    if (eventBody.fail) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: 'Inventory rollback error',
-        }),
-      };
-    }
-  }
-
   return {
     statusCode: 200,
     body: JSON.stringify({

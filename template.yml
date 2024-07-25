@@ -17,12 +17,6 @@ Resources:
       CodeUri: lambdas/payments
       Architectures:
         - x86_64
-      Events:
-        PaymentsGetApi:
-          Type: Api
-          Properties:
-            Path: /payments
-            Method: get
   PaymentsRefundFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -31,12 +25,6 @@ Resources:
       CodeUri: lambdas/payments-refund
       Architectures:
         - x86_64
-      Events:
-        PaymentsGetApi:
-          Type: Api
-          Properties:
-            Path: /payments-refund
-            Method: get
   OrdersFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -45,12 +33,6 @@ Resources:
       CodeUri: lambdas/orders
       Architectures:
         - x86_64
-      Events:
-        OrdersGetApi:
-          Type: Api
-          Properties:
-            Path: /orders
-            Method: get
   OrdersCancelFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -59,12 +41,6 @@ Resources:
       CodeUri: lambdas/orders-cancel
       Architectures:
         - x86_64
-      Events:
-        OrdersGetApi:
-          Type: Api
-          Properties:
-            Path: /orders-cancel
-            Method: get
   InventoryFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -73,12 +49,6 @@ Resources:
       CodeUri: lambdas/inventory
       Architectures:
         - x86_64
-      Events:
-        InventoryGetApi:
-          Type: Api
-          Properties:
-            Path: /inventory
-            Method: get
   InventoryRollbackFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -87,12 +57,6 @@ Resources:
       CodeUri: lambdas/inventory-rollback
       Architectures:
         - x86_64
-      Events:
-        InventoryGetApi:
-          Type: Api
-          Properties:
-            Path: /inventory-rollback
-            Method: get
   # ============== Lambdas END ==============
 
   # ============== Step Function ==============

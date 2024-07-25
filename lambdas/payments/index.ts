@@ -8,23 +8,19 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context
 ): Promise<APIGatewayProxyResult> => {
-  // mock process payment error
+  let eventBody = null;
   if (event.body) {
-    const eventBody = JSON.parse(event.body);
+    eventBody = JSON.parse(event.body);
 
-    if (eventBody.fail) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: 'Process payment error',
-        }),
-      };
+    if (eventBody.failProcessPayment) {
+      throw new Error('Payments process error');
     }
   }
 
   return {
     statusCode: 200,
     body: JSON.stringify({
+      ...eventBody,
       message: 'Payment successfully processed!',
     }),
   };
