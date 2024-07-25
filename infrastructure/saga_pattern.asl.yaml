@@ -21,21 +21,25 @@ States:
   InvokePayments:
     Type: Task
     Resource: ${PaymentsFunctionArn}
-    End: true
+    Next: InvokeNotifications
     Catch:
       - ErrorEquals:
           - States.ALL
         ResultPath: $.error
         Next: InvokePaymentsRefund
+  InvokeNotifications:
+    Type: Task
+    Resource: ${PaymentsFunctionArn}
+    End: true
   InvokeOrdersCancel:
     Type: Task
     Resource: ${OrdersCancelFunctionArn}
-    End: true
+    Next: InvokeNotifications
   InvokeInventoryRollback:
     Type: Task
     Resource: ${InventoryRollbackFunctionArn}
-    End: true
+    Next: InvokeOrdersCancel
   InvokePaymentsRefund:
     Type: Task
     Resource: ${PaymentsRefundFunctionArn}
-    End: true
+    Next: InvokeInventoryRollback

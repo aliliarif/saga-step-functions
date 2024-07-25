@@ -14,7 +14,7 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/payments
+      CodeUri: ../lambdas/payments
       Architectures:
         - x86_64
   PaymentsRefundFunction:
@@ -22,7 +22,7 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/payments-refund
+      CodeUri: ../lambdas/payments-refund
       Architectures:
         - x86_64
   OrdersFunction:
@@ -30,7 +30,7 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/orders
+      CodeUri: ../lambdas/orders
       Architectures:
         - x86_64
   OrdersCancelFunction:
@@ -38,7 +38,7 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/orders-cancel
+      CodeUri: ../lambdas/orders-cancel
       Architectures:
         - x86_64
   InventoryFunction:
@@ -46,7 +46,7 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/inventory
+      CodeUri: ../lambdas/inventory
       Architectures:
         - x86_64
   InventoryRollbackFunction:
@@ -54,7 +54,15 @@ Resources:
     Properties:
       Handler: dist/index.handler
       Runtime: nodejs20.x
-      CodeUri: lambdas/inventory-rollback
+      CodeUri: ../lambdas/inventory-rollback
+      Architectures:
+        - x86_64
+  NotificationsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/index.handler
+      Runtime: nodejs20.x
+      CodeUri: ../lambdas/notifications
       Architectures:
         - x86_64
   # ============== Lambdas END ==============
@@ -72,6 +80,7 @@ Resources:
         OrdersCancelFunctionArn: !GetAtt OrdersCancelFunction.Arn
         InventoryFunctionArn: !GetAtt InventoryFunction.Arn
         InventoryRollbackFunctionArn: !GetAtt InventoryRollbackFunction.Arn
+        NotificationsFunctionArn: !GetAtt NotificationsFunction.Arn
       Policies:
         - LambdaInvokePolicy:
             FunctionName: !Ref PaymentsFunction
@@ -85,4 +94,6 @@ Resources:
             FunctionName: !Ref InventoryFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref InventoryRollbackFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref NotificationsFunction
     # ============== Step Function ==============
