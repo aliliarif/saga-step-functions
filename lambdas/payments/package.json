@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "gts lint",
-    "serve:dev": "sam local start-api -p 3002",
     "clean": "gts clean",
     "compile": "tsc",
     "fix": "gts fix",
