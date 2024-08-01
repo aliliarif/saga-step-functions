@@ -1,45 +1,45 @@
-StartAt: InvokeOrders
+StartAt: CreateOrder
 States:
-  InvokeOrders:
+  CreateOrder:
     Type: Task
     Resource: ${OrdersFunctionArn}
-    Next: InvokeInventory
+    Next: UpdateInventory
     Catch:
       - ErrorEquals:
           - States.ALL
         ResultPath: $.error
-        Next: InvokeOrdersCancel
-  InvokeInventory:
+        Next: CancelOrder
+  UpdateInventory:
     Type: Task
     Resource: ${InventoryFunctionArn}
-    Next: InvokePayments
+    Next: ProcessPayment
     Catch:
       - ErrorEquals:
           - States.ALL
         ResultPath: $.error
-        Next: InvokeInventoryRollback
-  InvokePayments:
+        Next: InventoryRollback
+  ProcessPayment:
     Type: Task
     Resource: ${PaymentsFunctionArn}
-    Next: InvokeNotifications
+    Next: Notify
     Catch:
       - ErrorEquals:
           - States.ALL
         ResultPath: $.error
-        Next: InvokePaymentsRefund
-  InvokeNotifications:
-    Type: Task
-    Resource: ${PaymentsFunctionArn}
-    End: true
-  InvokeOrdersCancel:
+        Next: PaymentRefund
+  CancelOrder:
     Type: Task
     Resource: ${OrdersCancelFunctionArn}
-    Next: InvokeNotifications
-  InvokeInventoryRollback:
+    Next: Notify
+  InventoryRollback:
     Type: Task
     Resource: ${InventoryRollbackFunctionArn}
-    Next: InvokeOrdersCancel
-  InvokePaymentsRefund:
+    Next: CancelOrder
+  PaymentRefund:
     Type: Task
     Resource: ${PaymentsRefundFunctionArn}
-    Next: InvokeInventoryRollback
+    Next: InventoryRollback
+  Notify:
+    Type: Task
+    Resource: ${NotificationsFunctionArn}
+    End: true
