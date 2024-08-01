@@ -2,15 +2,14 @@
 
 ### Overview
 
-This repository contains source code that shows how to Orchestrate Microservices using Saga Pattern with AWS Step Functions.
+This repository contains the source code for orchestrating microservices using the Saga Pattern with AWS Step Functions. The blueprint demonstrates implementing the Saga Pattern in an e-commerce application using AWS Step Functions.
 
-The blueprint provides a implementation of the SAGA pattern for an e-commerce application using AWS Step Functions.
-
-<!-- [This blog post](https://docs.aws.amazon.com/lambda/) explains the sample in depth. -->
+In [this blog post](https://medium.com/@alili.arif/saga-pattern-for-composable-commerce-transactions-using-aws-step-functions-025ac1131817), you can read more about Saga pattern and composable commerce example walkthrough
 
 ### Project structure
 
-This project contains `infrastructure` folder which contains infrastructure code written with AWS SAM under `template.yml`, `lambdas` directory contains all AWS Lambda functions source code.
+- `infrastructure` Contains infrastructure code written with AWS SAM, defined in template.yml.
+- `lambdas`: Contains all AWS Lambda function source code.
 
 ### Prerequisites
 
